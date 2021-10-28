@@ -1,0 +1,78 @@
+
+
+<h1 class="mt-3">Todo</h1>
+
+
+<form [formGroup]="todoForm" (ngSubmit)="addTodoReactive()">
+    <div class="form-group mt-3">
+        <label for="taskName">Task Name</label>
+        <input (change)="handleSubmitState()" type="text" name="taskName" id="taskName" class="form-control" formControlName="taskName">
+        <span *ngIf="taskName && taskName.invalid && isSubmitted && taskName?.errors?.required">
+            Task Name Required
+        </span>
+        <span *ngIf="taskName?.errors?.pattern && isSubmitted">
+            Task Name Must Not Contain Symbols
+        </span>
+    </div>
+    <div class="form-group mt-3">
+        <label for="category">Category</label>
+        <select (change)="handleSubmitState()" class="form-control" name="category" id="category" formControlName="category">
+          <option value="">-- Input Here --</option>
+          <option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </option>
+        </select> 
+        <!-- <span *ngIf="category && category.invalid && isSubmitted">
+            Category Invalid
+        </span> -->
+        <span *ngIf="category?.errors?.required && isSubmitted">
+            Category Required
+        </span>
+    </div>
+    <div class="form-group mt-3">
+    <button type="submit" class="btn btn-success">
+        Add
+    </button>
+    </div>
+</form>
+<!-- <ol *ngFor="let task of tasks; let i=index" class="list-group">
+    <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-3 me-auto">
+            <div class="content {{ (task.status == 'done' ? 'done' : '') }}">
+                {{i+1}}. {{task.task}} - {{task.category}}
+            </div>
+        </div>
+        <button class="btn btn-warning btn-sm completed me-1" (click)="toggleDone(i)">
+            <i class="bi bi-check-circle"></i>
+        </button>
+        <button class="btn btn-danger btn-sm me-1" (click)="deleteTask(i)">
+            <i class="bi bi-trash-fill"></i>
+        </button>
+    </li>
+</ol> -->
+
+<div class="row">
+    <div class="col-12">
+      <table class="table table-bordered mt-3" *ngIf="containItems">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Task Name</th>
+            <th>Category</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="{{ (task.status == 'done' ? 'done' : '') }}" *ngFor="let task of tasks; let i=index">
+            <td scope="row">{{ i+1 }}</td>
+            <td>{{ task.task }}</td>
+            <td>{{ task.category }}</td>
+            <div>
+              <button (click)="toggleDone(i)" type="button" class="btn btn-warning me-2"><i class="bi bi-check-circle"></i></button>
+              <button (click)="deleteTask(i)" type="button" class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+            </div>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
